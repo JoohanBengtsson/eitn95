@@ -37,14 +37,15 @@ class State extends GlobalSimulation {
 
 	private void arrivalTo1() {
 		if (numberInQueue1 == 10) {
-			noRejects++;
+			noRejects += 1;
+			insertEvent(GlobalSimulation.ARRIVAL1, time + 100 * slump.nextDouble());
 			return;
 		}
 		if (this.numberInQueue1 == 0) {
-			insertEvent(GlobalSimulation.ARRIVAL2, time + 2 * slump.nextDouble());
+			insertEvent(GlobalSimulation.ARRIVAL2, time + 1 * slump.nextDouble());
 		}
 		numberInQueue1++;
-		insertEvent(GlobalSimulation.ARRIVAL1, time + 2.5 * slump.nextDouble());
+		insertEvent(GlobalSimulation.ARRIVAL1, time + 100 * slump.nextDouble());
 	}
 
 	private void arrivalTo2() {
@@ -52,13 +53,13 @@ class State extends GlobalSimulation {
 			insertEvent(READY, time + 2);
 		}
 		numberInQueue2++;
-		insertEvent(GlobalSimulation.ARRIVAL2, time + 2.5 * slump.nextDouble());
+		insertEvent(GlobalSimulation.ARRIVAL2, time + 1 * slump.nextDouble());
 	}
 
 	private void ready() {
 		numberInQueue2--;
 		if (numberInQueue2 > 0) {
-			insertEvent(READY, time + 2 * slump.nextDouble());
+			insertEvent(READY, time + 2);
 		}
 
 	}
