@@ -5,10 +5,11 @@ class State extends GlobalSimulation {
 
 	// Here follows the state variables and other variables that might be needed
 	// e.g. for measurements
-	public int arrived = 0, numberInQueue1 = 0, numberInQueue2 = 0, accumulated = 0, accumulated2 = 0, noMeasurements = 0, noRejects = 0;
-	public double percReject = 0; //int?
-	private double constQ1 = 5;
-	
+	public int arrived = 0, servedCustomers = 0, numberInQueue1 = 0, numberInQueue2 = 0, accumulated = 0,
+			accumulated2 = 0, noMeasurements = 0, noRejects = 0;
+	public double percReject = 0; // int?
+	private double constQ1 = 5, meanServ1 = 2.1, meanServ2 = 2;
+
 	Random slump = new Random(); // This is just a random number generator
 
 	// The following method is called by the main program each time a new event has
@@ -19,10 +20,10 @@ class State extends GlobalSimulation {
 		case GlobalSimulation.ARRIVAL1:
 			arrivalTo1();
 			break;
-		case GlobalSimulation.ARRIVAL2:
+		case GlobalSimulation.DEPT1:
 			departureFrom1();
 			break;
-		case READY:
+		case GlobalSimulation.DEPT2:
 			departureFrom2();
 			break;
 		case MEASURE:
@@ -39,31 +40,33 @@ class State extends GlobalSimulation {
 
 	private void arrivalTo1() {
 		arrived += 1;
-		if (numberInQueue1 == 10) {
+		if (numberInQueue1 < 10) {
+			this.numberInQueue1++;
+		} else {
 			noRejects += 1;
-			insertEvent(GlobalSimulation.ARRIVAL1, time + constQ1);
-			return;
 		}
-		if (this.numberInQueue1 == 0) {
-			insertEvent(GlobalSimulation.ARRIVAL2, time + getNextExp(2.1));
+		if (this.numberInQueue1 == 1) {
+			insertEvent(GlobalSimulation.DEPT1, time + getNextExp(this.meanServ1));
 		}
-		numberInQueue1++;
 		insertEvent(GlobalSimulation.ARRIVAL1, time + constQ1);
-	} //fixa numberInQueue1 
+	}
 
 	private void departureFrom1() {
-		
-		if (numberInQueue2 == 0) {
-			insertEvent(READY, time + 2);
+		this.numberInQueue1--;
+		this.numberInQueue2++;
+		if (numberInQueue2 == 1) {
+			insertEvent(DEPT2, time + this.meanServ2);
 		}
-		numberInQueue2++;
-		insertEvent(GlobalSimulation.ARRIVAL2, time + getNextExp(2.1));
+		if (this.numberInQueue1 > 0) {
+			insertEvent(GlobalSimulation.DEPT1, time + getNextExp(this.meanServ1));
+		}
 	}
-	
+
 	private void departureFrom2() {
+		servedCustomers++;
+		numberInQueue2--;
 		if (numberInQueue2 > 0) {
-			numberInQueue2--;
-			insertEvent(READY, time + 2);
+			insertEvent(DEPT2, time + this.meanServ2);
 		}
 	}
 
@@ -71,10 +74,10 @@ class State extends GlobalSimulation {
 		accumulated2 += numberInQueue2;
 		accumulated = accumulated + numberInQueue1 + numberInQueue2;
 		noMeasurements++;
-		insertEvent(MEASURE, time + getNextExp(5)); //tänk på warm up time 
+		insertEvent(MEASURE, time + getNextExp(5)); // tänk på warm up time
 	}
 	
 	public double getNextExp(double lambda) {
-	    return Math.log(1-slump.nextDouble())/(-lambda);
+		return Math.log(1 - slump.nextDouble()) / (-lambda);
 	}
 }
