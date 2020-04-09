@@ -5,8 +5,8 @@ class State extends GlobalSimulation {
 
 	// Here follows the state variables and other variables that might be needed
 	// e.g. for measurements
-	public int numberInQueue1 = 0, numberInQueue2 = 0, accumulated = 0, accumulated2 = 0, noMeasurements = 0;
-	public double noRejects = 0, percReject = 0; //int?
+	public int numberInQueue1 = 0, numberInQueue2 = 0, accumulated = 0, accumulated2 = 0, noMeasurements = 0, noRejects = 0;
+	public double percReject = 0; //int?
 	private double constQ1 = 5;
 	
 	Random slump = new Random(); // This is just a random number generator
