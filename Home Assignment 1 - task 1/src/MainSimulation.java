@@ -8,7 +8,7 @@ public class MainSimulation extends GlobalSimulation {
 		State actState = new State(); // The state that should be used
 		// Some events must be put in the event list at the beginning
 		insertEvent(GlobalSimulation.ARRIVAL1, 0);
-		insertEvent(MEASURE, 5);
+		insertEvent(MEASURE, 200);
 
 		// The main simulation loop
 		while (actState.noMeasurements < 1000) {
@@ -16,7 +16,7 @@ public class MainSimulation extends GlobalSimulation {
 			time = actEvent.eventTime;
 			actState.treatEvent(actEvent);
 		}
-
+		
 		// Printing the result of the simulation, in this case a mean value
 		System.out.println("N1 = " + actState.numberInQueue1 + "\nN2 = " + actState.numberInQueue2);
 		System.out

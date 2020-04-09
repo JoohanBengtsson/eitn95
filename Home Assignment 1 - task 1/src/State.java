@@ -52,6 +52,7 @@ class State extends GlobalSimulation {
 	} //fixa numberInQueue1 
 
 	private void arrivalTo2() {
+		numberInQueue1--;
 		if (numberInQueue2 == 0) {
 			insertEvent(READY, time + 2);
 		}
