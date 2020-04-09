@@ -6,7 +6,7 @@ class State extends GlobalSimulation {
 	// Here follows the state variables and other variables that might be needed
 	// e.g. for measurements
 	public int numberInQueue1 = 0, numberInQueue2 = 0, accumulated = 0, accumulated2 = 0, noMeasurements = 0;
-	public double noRejects = 0;
+	public double noRejects = 0, percReject = 0; //int?
 	private double constQ1 = 5;
 	
 	Random slump = new Random(); // This is just a random number generator
@@ -48,7 +48,7 @@ class State extends GlobalSimulation {
 		}
 		numberInQueue1++;
 		insertEvent(GlobalSimulation.ARRIVAL1, time + constQ1);
-	}
+	} //fixa numberInQueue1 
 
 	private void arrivalTo2() {
 		if (numberInQueue2 == 0) {
@@ -59,8 +59,8 @@ class State extends GlobalSimulation {
 	}
 	
 	private void ready() {
-		numberInQueue2--;
 		if (numberInQueue2 > 0) {
+			numberInQueue2--;
 			insertEvent(READY, time + 2);
 		}
 	}
@@ -69,7 +69,7 @@ class State extends GlobalSimulation {
 		accumulated2 += numberInQueue2;
 		accumulated = accumulated + numberInQueue1 + numberInQueue2;
 		noMeasurements++;
-		insertEvent(MEASURE, time + getNextExp(5));
+		insertEvent(MEASURE, time + getNextExp(5)); //tänk på warm up time 
 	}
 	
 	public double getNextExp(double lambda) {
