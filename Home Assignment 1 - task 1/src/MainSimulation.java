@@ -24,7 +24,8 @@ public class MainSimulation extends GlobalSimulation {
 		System.out.println("Average in the whole system: " + 1.0 * actState.accumulated / actState.noMeasurements);
 		System.out.println("Number of rejects were " + actState.noRejects
 				+ " and the total amount of customers during the run were " + actState.accumulated);
+		actState.percReject = (double) actState.noRejects / (actState.accumulated + actState.noRejects);
 		System.out.println("Thus, the average percentage of rejection was: "
-				+ 100 * actState.noRejects / (actState.accumulated + actState.noRejects) + "%");
+				+ 100 * actState.percReject + "%");
 	}
 }
