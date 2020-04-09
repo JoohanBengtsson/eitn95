@@ -20,10 +20,10 @@ class State extends GlobalSimulation {
 			arrivalTo1();
 			break;
 		case GlobalSimulation.ARRIVAL2:
-			arrivalTo2();
+			departureFrom1();
 			break;
 		case READY:
-			ready();
+			departureFrom2();
 			break;
 		case MEASURE:
 			measure();
@@ -51,8 +51,7 @@ class State extends GlobalSimulation {
 		insertEvent(GlobalSimulation.ARRIVAL1, time + constQ1);
 	} //fixa numberInQueue1 
 
-	private void arrivalTo2() {
-		numberInQueue1--;
+	private void departureFrom1() {
 		if (numberInQueue2 == 0) {
 			insertEvent(READY, time + 2);
 		}
@@ -60,7 +59,7 @@ class State extends GlobalSimulation {
 		insertEvent(GlobalSimulation.ARRIVAL2, time + getNextExp(2.1));
 	}
 	
-	private void ready() {
+	private void departureFrom2() {
 		if (numberInQueue2 > 0) {
 			numberInQueue2--;
 			insertEvent(READY, time + 2);
