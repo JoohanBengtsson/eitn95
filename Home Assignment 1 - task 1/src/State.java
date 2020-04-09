@@ -5,7 +5,7 @@ class State extends GlobalSimulation {
 
 	// Here follows the state variables and other variables that might be needed
 	// e.g. for measurements
-	public int numberInQueue1 = 0, numberInQueue2 = 0, accumulated = 0, accumulated2 = 0, noMeasurements = 0, noRejects = 0;
+	public int arrived = 0, numberInQueue1 = 0, numberInQueue2 = 0, accumulated = 0, accumulated2 = 0, noMeasurements = 0, noRejects = 0;
 	public double percReject = 0; //int?
 	private double constQ1 = 5;
 	
@@ -38,6 +38,7 @@ class State extends GlobalSimulation {
 	// things are getting more complicated than this.
 
 	private void arrivalTo1() {
+		arrived += 1;
 		if (numberInQueue1 == 10) {
 			noRejects += 1;
 			insertEvent(GlobalSimulation.ARRIVAL1, time + constQ1);
