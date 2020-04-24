@@ -8,7 +8,7 @@ public class MainSimulation extends GlobalSimulation {
 		State actState = new State(); // The state that should be used
 		// Some events must be put in the event list at the beginning
 		insertEvent(GlobalSimulation.ARRIVAL1, 0);
-		insertEvent(MEASURE, 5);
+		insertEvent(MEASURE, 100000);
 
 		// The main simulation loop
 		while (actState.noMeasurements < 100000) {

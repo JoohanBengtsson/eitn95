@@ -83,8 +83,8 @@ class State extends GlobalSimulation {
 		return Math.log(1 - slump.nextDouble()) / (-lambda);
 	}
 	
-	public int getAvgNoQ1(){
-		int acc1 = 0;
+	public double getAvgNoQ1(){
+		double acc1 = 0;
 		int i = 0;
 		while(_noQ1.size() > 0) {
 			acc1 += _noQ1.poll();
@@ -93,8 +93,8 @@ class State extends GlobalSimulation {
 		return acc1/i;
 	}
 	
-	public int getAvgNoQ2(){
-		int acc2 = 0;
+	public double getAvgNoQ2(){
+		double acc2 = 0;
 		int i = 0;
 		while(_noQ2.size() > 0) {
 			acc2 += _noQ2.poll();
