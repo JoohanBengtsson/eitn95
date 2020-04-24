@@ -2,13 +2,15 @@ import java.util.*;
 import java.io.*;
 
 class State extends GlobalSimulation {
+	
 
 	// Here follows the state variables and other variables that might be needed
 	// e.g. for measurements
-	public int arrived = 0, servedCustomers = 0, numberInQueue1 = 0, numberInQueue2 = 0, accumulated = 0,
-			accumulated2 = 0, noMeasurements = 0, noRejects = 0;
-	public double percReject = 0; // int?
-	private double constQ1 = 5, meanServ1 = 2.1, meanServ2 = 2;
+	public int arrived = 0, servedCustomers = 0, numberInQueue1 = 0, numberInQueue2 = 0, noMeasurements = 0, noRejects = 0;
+	private double percReject;
+	private LinkedList<Integer> _noQ1 = new LinkedList<Integer>();
+	private LinkedList<Integer> _noQ2 = new LinkedList<Integer>();
+	private double constQ1 = 1, meanServ1 = 1/2.1, meanServ2 = 2;
 
 	Random slump = new Random(); // This is just a random number generator
 
@@ -46,7 +48,7 @@ class State extends GlobalSimulation {
 			noRejects += 1;
 		}
 		if (this.numberInQueue1 == 1) {
-			insertEvent(GlobalSimulation.DEPT1, time + getNextExp(this.meanServ1));
+			insertEvent(GlobalSimulation.DEPT1, time + getNextExp(meanServ1));
 		}
 		insertEvent(GlobalSimulation.ARRIVAL1, time + constQ1);
 	}
@@ -58,7 +60,7 @@ class State extends GlobalSimulation {
 			insertEvent(DEPT2, time + this.meanServ2);
 		}
 		if (this.numberInQueue1 > 0) {
-			insertEvent(GlobalSimulation.DEPT1, time + getNextExp(this.meanServ1));
+			insertEvent(GlobalSimulation.DEPT1, time + getNextExp(meanServ1));
 		}
 	}
 
@@ -71,13 +73,34 @@ class State extends GlobalSimulation {
 	}
 
 	private void measure() {
-		accumulated2 += numberInQueue2;
-		accumulated = accumulated + numberInQueue1 + numberInQueue2;
+		_noQ1.add(numberInQueue1);
+		_noQ2.add(numberInQueue2);
 		noMeasurements++;
-		insertEvent(MEASURE, time + getNextExp(5)); // tänk på warm up time
+		insertEvent(MEASURE, time + getNextExp(0.2)); // tänk på warm up time
 	}
 	
 	public double getNextExp(double lambda) {
 		return Math.log(1 - slump.nextDouble()) / (-lambda);
 	}
+	
+	public int getAvgNoQ1(){
+		int acc1 = 0;
+		int i = 0;
+		while(_noQ1.size() > 0) {
+			acc1 += _noQ1.poll();
+			i++;
+		}
+		return acc1/i;
+	}
+	
+	public int getAvgNoQ2(){
+		int acc2 = 0;
+		int i = 0;
+		while(_noQ2.size() > 0) {
+			acc2 += _noQ2.poll();
+			i++;
+		}
+		return acc2/i;
+	}
+	
 }
