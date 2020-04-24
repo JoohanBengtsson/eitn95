@@ -39,6 +39,8 @@ class State extends GlobalSimulation {
 	// things are getting more complicated than this.
 
 	private void arrivalTo1() {
+		int i = 1;
+		i ++;
 		arrived += 1;
 		if (numberInQueue1 < 10) {
 			this.numberInQueue1++;
